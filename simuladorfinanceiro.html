@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador  Financeiro 🪙</title>
+</head>
+<body>
+    <h1>SIMULADOR FINANCEIRO 🪙</h1>
+    <p>Insira o número de colmeias</p>
+    <input type="text" id="ipt_colmeias">
+    <p>Insira o preço do mel por kg</p>
+    <input type="text" id="ipt_preco_mel">
+    <p>Insira o custo basico de manutenção por colmeia</p>
+    <input type="text" id="ipt_custo">
+    <p>Usar nosso sensor?(sim / não)</p>
+    <input type="text" id="ipt_sensor"><br><br>
+    <button onclick="analisar()">ANALISAR</button>
+    <div id="div_mensagem"></div>
+    
+</body>
+</html>
+<script>
+    function analisar(){
+        let numero= Number(ipt_colmeias.value);
+        let preco = Number(ipt_preco_mel.value);
+        let custo = Number(ipt_custo.value);
+        let colmeia_sem_sensor = numero * 0.8;
+        let producao_sem_kg = colmeia_sem_sensor * 25;
+        let faturamento1 = producao_sem_kg * preco;
+        let custototal1 = custo * numero;
+        let lucro = faturamento1 - custototal1;
+        let sensor = ipt_sensor.value
+
+        if (sensor == "não"){
+        div_mensagem.innerHTML = `<br><br>colmeias produtivas =<b> ${colmeia_sem_sensor} colmeias</b> (conta baseada nos dados da embrapa, em que 20% do número de colmeias são perdidos em produções normais)`;
+        div_mensagem.innerHTML += `<br><br>produção total =<b> ${producao_sem_kg} kg </b>(colmeias produtivas x 25 -levando em conta uma colmeia média em um apiário convencional ter 25kg)`;
+        div_mensagem.innerHTML += `<br><br>faturamento bruto =<b> ${faturamento1}  </b>(produção total em kg x preço do kg do mel)`;
+        div_mensagem.innerHTML += `<br><br>custo total =<b> ${custototal1} </b> (custo por colmeia x numero de colmeias)`;
+        div_mensagem.innerHTML += `<br><br>lucro líquido =<b> ${lucro}  </b>(faturamento bruto - custo total)`;
+        div_mensagem.innerHTML += `<br><br>Margem de lucro = <b>${((lucro / faturamento1)* 100).toFixed(2)} %</b>`;
+        }
+        else if(sensor == "sim"){
+        div_mensagem.innerHTML = `<br><br>colmeias produtivas =<b> ${numero * 0.95} colmeias </b>(conta baseada nos dados da embrapa, em que 20% do número de colmeias são perdidos em produções normais)`;
+        div_mensagem.innerHTML += `<br><br>produção total =<b> ${(numero * 0.95) * 27.5} kg </b>(colmeias produtivas x 27.5 -levando em conta que com o sensor seria possível controlar o numero de abelhas, deixando a colmeia mais pesada - dado de BEEHERO)`;
+        div_mensagem.innerHTML += `<br><br>faturamento bruto =<b> ${((numero * 0.95) * 27.5) * preco} </b> (produção total em kg x preço do kg do mel)`;
+        div_mensagem.innerHTML += `<br><br>custo total =<b> ${custototal1 + 500}  </b>(custo por colmeia x numero de colmeias, além do custo de manutenção do site e de instalação)`;
+        div_mensagem.innerHTML += `<br><br>lucro líquido =<b> ${(((numero * 0.95) * 27.5) * preco) - (custototal1 + 500)} </b> (faturamento bruto - custo total)`;
+        div_mensagem.innerHTML += `<br><br>Margem de lucro =<b> ${((((((numero * 0.95) * 27.5) * preco) - (custototal1 + 500)) / (((numero * 0.95) * 27.5) * preco))* 100).toFixed(2)} %</b>`;
+        div_mensagem.innerHTML += `<br><br><b> Se comparado a não usar sensor voce está ganhando R$${((((numero * 0.95) * 27.5) * preco) - (custototal1 + 500)) - lucro} a mais</b>`;
+
+        }else if (sensor == "")
+            alert("insira todos os dados")
+            else{
+                alert ("escreva o uso do sensor da maneira correta")
+            }
+
+    }
+
+</script>
