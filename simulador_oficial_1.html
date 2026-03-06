@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Simulador Financeiro</title>
+</head>
+<body>
+    <h1> Calculadora de Apiários 🏛️ 🐝</h1>
+    <p> Quantos apiários você possui? </p>
+    <input type="text" id="ipt_apiarios">
+    <br>
+    <p> Quantas Colmeias por apiário? </p>
+    <input type="text" id="ipt_colmeias">
+    <br>
+    <p> O Custo de Manutenção da Colmeia em reais: </p>
+    <input type="text" id="ipt_manutencao">
+    <br> 
+    <p> Informe o Preço médio do mel por kg em reais: </p>
+    <input type="text" id="ipt_preco">
+    <br>
+    <p> O apiário tem monitoramento inteligente? (Sim / Não) </p>
+    <input type="text" id="ipt_sensor">
+    <br>
+    <br>
+    <button onclick="Calcular()"> Calcular Lucro </button>
+    <br>
+    <div id="div_mensagem"> </div>
+</body>
+</html>
+    <script>
+        function Calcular(){
+        // Variáveis
+    let qtdApiario = Number(ipt_apiarios.value);
+    let qtdColmeia = Number (ipt_colmeias.value);
+    let qtdtotalcolmeia = qtdColmeia * qtdApiario;
+    let manutenção = Number (ipt_manutencao.value);
+    let precoMel = Number (ipt_preco.value);
+    let sensor = ipt_sensor.value;
+        // Variaveis Cálculos
+    // Variaveis Sensor == Sim
+    let ColmeiasProdutivas_sensor = qtdtotalcolmeia * 0.95; //Quantidade de colmeias produtivas usando o sensor, levando em conta que ainda seria possível ter uma perda de 5% do total
+    let colmeia_sem_sensor = qtdtotalcolmeia * 0.8; // Porcentagem de perda do DCC em média de 20%
+    let qtdMel = colmeia_sem_sensor * 25; // 25 kg em média
+    let qtdMelsensor = ColmeiasProdutivas_sensor * 27.5;
+    let faturamento_sensor = qtdMelsensor * precoMel; 
+    let faturamento_semsensor = qtdMel * precoMel;
+    let custoTotal = manutenção * qtdtotalcolmeia;
+    let custoTotal_sensor = custoTotal + 500;
+    let lucroLiquido_sensor = faturamento_sensor - custoTotal_sensor;
+    let lucroLiquido_semsensor = faturamento_semsensor - custoTotal;
+    // Variaveis sensor == não 
+   
+    let producao_perca_kg = colmeia_sem_sensor * 25; // 25 kg em média
+        // If Usar sensor ou não 
+        if (sensor == 'Sim'){
+            div_mensagem.innerHTML = `<br><br>Colmeias Produtivas =<b> ${ColmeiasProdutivas_sensor} colmeias </b>(Quantidade de Apiários x Quantidade de Colmeias, mas levando em conta uma perda de 5% por outras causas)`;
+
+            div_mensagem.innerHTML += `<br><br>Produção Total =<b> ${qtdMelsensor} kg </b>(colmeias produtivas x 27.5 KG -levando em conta que com o sensor seria possível evitar o DCC, deixando a colmeia mais pesada, se comparado a como seria normalmente - em torno de 25kg - dado de BEEHERO)`;
+
+            div_mensagem.innerHTML += `<br><br>faturamento bruto =<b> ${faturamento_sensor}  </b>(produção total em kg x preço do kg do mel)`;
+
+            div_mensagem.innerHTML += `<br><br>Custo Total =<b> ${custoTotal_sensor}  </b>(custo por colmeia x número de colmeias, além do custo de manutenção do site e de instalação - em torno de R$500)`;
+
+            div_mensagem.innerHTML += `<br><br>lucro líquido =<b> ${lucroLiquido_sensor} </b> (faturamento bruto - custo total)`;
+
+            div_mensagem.innerHTML += `<br><br>Margem de lucro =<b> ${((lucroLiquido_sensor / faturamento_sensor) * 100).toFixed(2)} %</b>(Lucro líquido / faturamento)`;
+
+            div_mensagem.innerHTML += `<br><br><b> Se comparado a não usar sensor voce está ganhando R$${lucroLiquido_sensor - lucroLiquido_semsensor} a mais</b>`;
+        }
+
+        else if (sensor == 'Não'){
+            div_mensagem.innerHTML = `<br><br>colmeias produtivas =<b> ${colmeia_sem_sensor} colmeias</b> (conta baseada nos dados da embrapa, em que 20% do número de colmeias são perdidos em produções normais)`;
+
+            div_mensagem.innerHTML += `<br><br>produção total =<b> ${producao_perca_kg} kg </b>(colmeias produtivas x 25 -levando em conta uma colmeia média em um apiário convencional ter 25kg)`;
+
+            div_mensagem.innerHTML += `<br><br>faturamento bruto =<b> ${faturamento_semsensor}  </b>(produção total em kg x preço do kg do mel)`;
+
+            div_mensagem.innerHTML += `<br><br>custo total =<b> ${custoTotal} </b> (custo por colmeia x numero de colmeias)`;
+
+            div_mensagem.innerHTML += `<br><br>lucro líquido =<b> ${lucroLiquido_semsensor}  </b>(faturamento bruto - custo total)`;
+
+            div_mensagem.innerHTML += `<br><br>Margem de lucro = <b>${((lucroLiquido_semsensor / faturamento_semsensor)* 100).toFixed(2)} %</b>(Lucro líquido / faturamento)`
+        }
+
+        else if (sensor == 'não'){
+            div_mensagem.innerHTML = `<br><br>colmeias produtivas =<b> ${colmeia_sem_sensor} colmeias</b> (conta baseada nos dados da embrapa, em que 20% do número de colmeias são perdidos em produções normais)`;
+
+            div_mensagem.innerHTML += `<br><br>produção total =<b> ${producao_perca_kg} kg </b>(colmeias produtivas x 25 -levando em conta uma colmeia média em um apiário convencional ter 25kg)`;
+
+            div_mensagem.innerHTML += `<br><br>faturamento bruto =<b> ${faturamento_semsensor}  </b>(produção total em kg x preço do kg do mel)`;
+
+            div_mensagem.innerHTML += `<br><br>custo total =<b> ${custoTotal} </b> (custo por colmeia x numero de colmeias)`;
+
+            div_mensagem.innerHTML += `<br><br>lucro líquido =<b> ${lucroLiquido_semsensor}  </b>(faturamento bruto - custo total)`;
+
+            div_mensagem.innerHTML += `<br><br>Margem de lucro = <b>${((lucroLiquido_semsensor / faturamento_semsensor)* 100).toFixed(2)} %</b>(Lucro líquido / faturamento)`
+        }
+        else if (sensor == 'sim'){
+            div_mensagem.innerHTML = `<br><br>Colmeias Produtivas =<b> ${ColmeiasProdutivas_sensor} colmeias </b>(Quantidade de Apiários x Quantidade de Colmeias, mas levando em conta uma perda de 5% por outras causas)`;
+
+            div_mensagem.innerHTML += `<br><br>Produção Total =<b> ${qtdMelsensor} kg </b>(colmeias produtivas x 27.5 KG -levando em conta que com o sensor seria possível evitar o DCC, deixando a colmeia mais pesada - dado de BEEHERO)`;
+
+            div_mensagem.innerHTML += `<br><br>faturamento bruto =<b> ${faturamento_sensor}  </b>(produção total em kg x preço do kg do mel)`;
+
+            div_mensagem.innerHTML += `<br><br>Custo Total =<b> ${custoTotal_sensor}  </b>(custo por colmeia x numero de colmeias, além do custo de manutenção do site e de instalação - em torno de R$500)`;
+
+            div_mensagem.innerHTML += `<br><br>lucro líquido =<b> ${lucroLiquido_sensor} </b> (faturamento bruto - custo total)`;
+
+            div_mensagem.innerHTML += `<br><br>Margem de lucro =<b> ${((lucroLiquido_sensor / faturamento_sensor) * 100).toFixed(2)} %</b>(Lucro líquido / faturamento)`;
+
+            div_mensagem.innerHTML += `<br><br><b> Se comparado a não usar sensor voce está ganhando R$${lucroLiquido_sensor - lucroLiquido_semsensor} a mais</b>`;
+        }
+        
+        else if (sensor == 'nao'){
+            div_mensagem.innerHTML = `<br><br>colmeias produtivas =<b> ${colmeia_sem_sensor} colmeias</b> (conta baseada nos dados da embrapa, em que 20% do número de colmeias são perdidos em produções normais)`;
+
+            div_mensagem.innerHTML += `<br><br>produção total =<b> ${producao_perca_kg} kg </b>(colmeias produtivas x 25 -levando em conta uma colmeia média em um apiário convencional ter 25kg)`;
+
+            div_mensagem.innerHTML += `<br><br>faturamento bruto =<b> ${faturamento_semsensor}  </b>(produção total em kg x preço do kg do mel)`;
+
+            div_mensagem.innerHTML += `<br><br>custo total =<b> ${custoTotal} </b> (custo por colmeia x numero de colmeias)`;
+
+            div_mensagem.innerHTML += `<br><br>lucro líquido =<b> ${lucroLiquido_semsensor}  </b>(faturamento bruto - custo total)`;
+
+            div_mensagem.innerHTML += `<br><br>Margem de lucro = <b>${((lucroLiquido_semsensor / faturamento_semsensor)* 100).toFixed(2)} %</b>(Lucro líquido / faturamento)`
+        }
+
+       else if (sensor == "")
+            alert("insira todos os dados")
+            else{
+                alert ("escreva o uso do sensor da maneira correta")
+            }
+
+      }
+
+    </script>
