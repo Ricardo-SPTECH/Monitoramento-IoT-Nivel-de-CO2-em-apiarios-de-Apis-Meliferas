@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Simulador Financeiro - Bee Comes</title>
+</head>
+<body>
+
+    <h1>Simulador de Impacto Econômico - Grupo 10</h1>
+    <p>Preencha os dados do seu apiário para calcular o prejuízo causado pelo excesso de CO2.</p>
+
+    <span>Quantidade total de colmeias no apiário:</span><br>
+    <input id="ipt_total_colmeias" type="text" placeholder="Ex: 20"><br><br>
+
+    <span>Produção média de mel por colmeia (em kg/ano):</span><br>
+    <input id="ipt_producao_kg" type="text" placeholder="Padrão: 40"><br><br>
+
+    <span>Preço de venda do mel (R$ por kg):</span><br>
+    <input id="ipt_preco_mel" type="text" placeholder="Ex: 20.00"><br><br>
+
+    <span>Quantidade de colmeias perdidas por fuga (DCC):</span><br>
+    <input id="ipt_colmeias_perdidas" type="text" placeholder="Ex: 2"><br><br>
+
+    <span>Gasto anual com manutenção por colmeia (R$):</span><br>
+    <input id="ipt_custo_manutencao" type="text" placeholder="Ex: 30"><br><br>
+
+    <button onclick="analisarPrejuizo()">Analisar Impacto Financeiro</button>
+
+    <div id="div_resultado"></div>
+
+    <script>
+        function analisarPrejuizo() {
+            let totalColmeias = Number(ipt_total_colmeias.value);
+            let producaoKg = Number(ipt_producao_kg.value);
+            let precoKg = Number(ipt_preco_mel.value);
+            let perdidas = Number(ipt_colmeias_perdidas.value);
+            let custoUnidade = Number(ipt_custo_manutencao.value);
+            let receitaTotalEsperada = totalColmeias * producaoKg * precoKg;
+            let custoTotalManutencao = totalColmeias * custoUnidade;
+            let lucroPotencial = receitaTotalEsperada - custoTotalManutencao;
+            let receitaPerdida = perdidas * producaoKg * precoKg;
+            let custoDesperdicado = perdidas * custoUnidade;
+            let prejuizoTotal = receitaPerdida + custoDesperdicado;
+            let lucroReal = lucroPotencial - prejuizoTotal;
+            let porcentagemFuga = (perdidas / totalColmeias) * 100;
+
+            if (totalColmeias <= 0) {
+                div_resultado.innerHTML = "<b style='color: red;'>[ERRO]</b> Preencha a quantidade de colmeias corretamente.";
+            } 
+            else if (producaoKg <= 0) {
+                div_resultado.innerHTML = "<b style='color: red;'>[ERRO]</b> Preencha a produção corretamente.";
+            }
+            else if (precoKg <= 0) {
+                div_resultado.innerHTML = "<b style='color: red;'>[ERRO]</b> Preencha o preço corretamente.";
+            }
+            else {
+                div_resultado.innerHTML = "<h3>Análise de Desempenho</h3>" +
+                    "Seu lucro potencial (sem perdas) seria de: <b>R$ " + (lucroPotencial.toFixed(2)) + "</b>.<br>" +
+                    "Devido às perdas, seu lucro real foi de: <b style='color: green;'>R$ " + (lucroReal.toFixed(2)) + "</b>.<br>" +
+                    "Atualmente, sua taxa de perda por fuga é de: <b>" + (porcentagemFuga.toFixed(1)) + "%</b>.";
+
+                if (porcentagemFuga == 0) {
+                    div_resultado.innerHTML += "<br><b style='color: blue;'>Excelente!</b> Seu apiário está estável, mas o monitoramento de CO2 é essencial para prevenir futuras fugas.";
+                } 
+                else if (porcentagemFuga <= 15) {
+                    div_resultado.innerHTML += "<br>O seu prejuízo total é de <b>R$ " + (prejuizoTotal.toFixed(2)) + "</b>.<br>" +
+                        "Com o sistema <b>Bee Comes</b>, poderíamos recuperar <b>R$ " + ((prejuizoTotal * 0.8).toFixed(2)) + "</b> deste valor através de alertas preventivos.";
+                } 
+                else if (porcentagemFuga <= 30) {
+                    div_resultado.innerHTML += "<br><b style='color: orange;'>ALERTA:</b> Sua perda de <b>R$ " + (prejuizoTotal.toFixed(2)) + "</b> está acima da média de segurança.<br>" +
+                        "O acúmulo de CO2 está estressando o enxame. Recomendamos a instalação imediata dos sensores da BeeComes.";
+                } 
+                else {
+                    div_resultado.innerHTML += "<br><b style='color: red;'>SITUAÇÃO CRÍTICA:</b> Você está perdendo <b>R$ " + (prejuizoTotal.toFixed(2)) + "</b> por ano!<br>" +
+                        "Isso representa uma grande fatia do seu potencial de lucro. Sem intervenção tecnológica, seu apiário pode entrar em colapso total.";
+                }
+
+                div_resultado.innerHTML += "<br><br><i>Investimento estimado em sensores para " + (totalColmeias) + " colmeias: R$ " + ((totalColmeias * 45).toFixed(2)) + " (Parcela única).</i>";
+            }
+        }
+    </script>
+
+</body>
+</html>
