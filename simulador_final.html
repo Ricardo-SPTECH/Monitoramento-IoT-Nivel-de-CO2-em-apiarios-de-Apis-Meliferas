@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Simulador Financeiro</title>
+</head>
+<body>
+    <h1> Calculadora de Apiários 🏛️ 🐝</h1>
+    <p> Quantos apiários você possui? </p>
+    <input type="text" id="ipt_apiarios">
+    <br>
+    <p> Quantas Colmeias por apiário? </p>
+    <input type="text" id="ipt_colmeias">
+    <br>
+    <p> O Custo de Manutenção da Colmeia: </p>
+    <input type="text" id="ipt_manutencao">
+    <br> 
+    <p> Informe o Preço médio do mel por kg: </p>
+    <input type="text" id="ipt_preco">
+    <br>
+    <p> O apiário tem monitoramento inteligente? (Sim / Não) </p>
+    <input type="text" id="ipt_sensor">
+    <br>
+    <button onclick="Calcular()"> Calcular Lucro </button>
+    <br>
+    <div id="div_mensagem"> </div>
+</body>
+</html>
+    <script>
+        function Calcular(){
+        // Variáveis
+    let qtdApiario = Number(ipt_apiarios.value);
+    let qtdColmeia = Number (ipt_colmeias.value);
+    let manutenção = Number (ipt_manutencao.value);
+    let precoMel = Number (ipt_preco.value);
+    let sensor = ipt_sensor.value;
+        // Variaveis Cálculos
+    // Variaveis Sensor == Sim
+    let ColmeiasProdutivas = qtdApiario * qtdColmeia;
+    let qtdMel = ColmeiasProdutivas * 25; // 25 kg em média
+    let faturamento = qtdMel * precoMel; 
+    let custoTotal = manutenção * qtdColmeia;
+    let lucroLiquido = faturamento - custoTotal;
+    // Variaveis sensor == não 
+    let colmeia_sem_sensor = qtdColmeia * 0.8; // Porcentagem de perda do DCC em média de 20%
+    let producao_perca_kg = colmeia_sem_sensor * 25; // 25 kg em média
+        // If Usar sensor ou não 
+        if (sensor == 'sim'){
+            div_mensagem.innerHTML = `<br><br>Colmeias Produtivas =<b> ${ColmeiasProdutivas} colmeias </b>(Quantidade de Apiários x Quantidade de Colmeias)`;
+
+            div_mensagem.innerHTML += `<br><br>Produção Total =<b> ${(ColmeiasProdutivas) * 27.5} kg </b>(colmeias produtivas x 27.5 KG -levando em conta que com o sensor seria possível evitar o DCC, deixando a colmeia mais pesada - dado de BEEHERO)`
+
+             div_mensagem.innerHTML += `<br><br>Custo Total =<b> ${custoTotal + manutenção}  </b>(custo por colmeia x numero de colmeias, além do custo de manutenção do site e de instalação)`;
+
+             div_mensagem.innerHTML += `<br><br>lucro líquido =<b> ${lucroLiquido} </b> (faturamento bruto - custo total)`;
+
+             div_mensagem.innerHTML += `<br><br>Margem de lucro =<b> ${(((((ColmeiasProdutivas * 27.5) * precoMel) - (custoTotal + 500)) / ((ColmeiasProdutivas * 27.5) * precoMel))* 100).toFixed(2)} %</b>`;
+
+             div_mensagem.innerHTML += `<br><br><b> Se comparado a não usar sensor voce está ganhando R$${(ColmeiasProdutivas) * 27.5 * precoMel - custoTotal + manutenção - lucroLiquido} a mais</b>`;
+        }
+
+        else if (sensor == 'não'){
+            div_mensagem.innerHTML = `<br><br>colmeias produtivas =<b> ${colmeia_sem_sensor} colmeias</b> (conta baseada nos dados da embrapa, em que 20% do número de colmeias são perdidos em produções normais)`;
+
+            div_mensagem.innerHTML += `<br><br>produção total =<b> ${producao_perca_kg} kg </b>(colmeias produtivas x 25 -levando em conta uma colmeia média em um apiário convencional ter 25kg)`;
+
+            div_mensagem.innerHTML += `<br><br>faturamento bruto =<b> ${faturamento}  </b>(produção total em kg x preço do kg do mel)`;
+
+            div_mensagem.innerHTML += `<br><br>custo total =<b> ${custoTotal} </b> (custo por colmeia x numero de colmeias)`;
+
+            div_mensagem.innerHTML += `<br><br>lucro líquido =<b> ${lucroLiquido}  </b>(faturamento bruto - custo total)`;
+
+            div_mensagem.innerHTML += `<br><br>Margem de lucro = <b>${((lucroLiquido / faturamento)* 100).toFixed(2)} %</b>`
+        }
+
+       else if (sensor == "")
+            alert("insira todos os dados")
+            else{
+                alert ("escreva o uso do sensor da maneira correta")
+            }
+
+      }
+
+    </script>
