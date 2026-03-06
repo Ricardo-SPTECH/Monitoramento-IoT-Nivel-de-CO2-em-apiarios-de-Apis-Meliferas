@@ -47,7 +47,7 @@
     let colmeia_sem_sensor = qtdColmeia * 0.8; // Porcentagem de perda do DCC em média de 20%
     let producao_perca_kg = colmeia_sem_sensor * 25; // 25 kg em média
         // If Usar sensor ou não 
-        if (sensor == 'sim'){
+        if (sensor == 'Sim'){
             div_mensagem.innerHTML = `<br><br>Colmeias Produtivas =<b> ${ColmeiasProdutivas} colmeias </b>(Quantidade de Apiários x Quantidade de Colmeias)`;
 
             div_mensagem.innerHTML += `<br><br>Produção Total =<b> ${(ColmeiasProdutivas) * 27.5} kg </b>(colmeias produtivas x 27.5 KG -levando em conta que com o sensor seria possível evitar o DCC, deixando a colmeia mais pesada - dado de BEEHERO)`
@@ -61,7 +61,7 @@
              div_mensagem.innerHTML += `<br><br><b> Se comparado a não usar sensor voce está ganhando R$${(ColmeiasProdutivas) * 27.5 * precoMel - custoTotal + manutenção - lucroLiquido} a mais</b>`;
         }
 
-        else if (sensor == 'não'){
+        else if (sensor == 'Não'){
             div_mensagem.innerHTML = `<br><br>colmeias produtivas =<b> ${colmeia_sem_sensor} colmeias</b> (conta baseada nos dados da embrapa, em que 20% do número de colmeias são perdidos em produções normais)`;
 
             div_mensagem.innerHTML += `<br><br>produção total =<b> ${producao_perca_kg} kg </b>(colmeias produtivas x 25 -levando em conta uma colmeia média em um apiário convencional ter 25kg)`;
