@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador Finaceiro</title>
+</head>
+<body>
+    <h1>Simulador Finaceiro</h1>
+    <p>preencha as informações seguintes para calcular o prejuizo causado pela perda das abelhas por ano</p>
+    <p>Quantas apiarios que possui</p>
+    <input type="text" id="ipt_apiarios">
+    <p>Quantas colmeias em cada apiario</p>
+    <input type="text" id="ipt_colmeias">
+    <p>Quantos quilos de mel são produzidos por ano</p>
+    <input type="text" id="ipt_mel">
+    <p>Preço de venda do quilo do mel por reais</p>
+    <input type="text" id="ipt_preco">
+    <p>Quantidade de colmeias perdidas por ano</p>
+    <input type="text" id="ipt_perda">
+    <p>Gasto anual em reais para manutenção (por colmeias)</p>
+    <input type="text" id="ipt_manutencao">
+    <p></p>
+    <button onclick="prejuizo()">Ver meu prejuizo</button>
+    <p></p>
+    <div  id="div_calculo"></div>
+</body>
+</html>
+<script>
+    function prejuizo(){
+        //lets de inputs
+        let apiarios = Number(ipt_apiarios.value)
+        let colmeias = Number(ipt_colmeias.value)
+        let mel = Number(ipt_mel.value)
+        let preco = Number(ipt_preco.value)
+        let perda = Number(ipt_perda.value)
+        let manutencao = Number(ipt_manutencao.value)
+        //let´s de calculos 
+        let totalVenda =  colmeias * mel * preco
+        let custoManutencao = colmeias * manutencao
+        let lucroEsperado = totalVenda - custoManutencao
+        let custoFuga = perda * mel * preco
+        let lucroFulga = lucroEsperado - custoFuga
+        let prejuizoTotal = lucroEsperado - lucroFulga
+        let fulga = (perda/colmeias ) * 100
+        let beeComes = prejuizoTotal * 0.8
+
+        if (colmeias == 0){
+            div_calculo.innerHTML = 'Insira Valores validos'
+
+            if (mel == 0)
+            {
+             div_calculo.innerHTML = 'Insira Valores validos'
+            }
+
+
+            if (preco == 0)
+            {
+                div_calculo.innerHTML = 'Insira Valores validos'
+            }
+
+                
+            if (preco == 0)
+            {
+                div_calculo.innerHTML = 'Insira Valores validos'
+            }
+
+            if (perda == 0)
+            {
+            div_calculo.innerHTML = 'Insira Valores validos'
+            } 
+
+            if (preco == 0){
+            div_calculo.innerHTML = 'Insira Valores validos'
+            }
+            
+            if (perda == 0){
+            div_calculo.innerHTML = 'Insira Valores validos'
+             } 
+
+        }else {
+            div_calculo.innerHTML = 'Seu lucro total é R$' + lucroEsperado.toFixed(2) + `<br>` +
+            'Com a perda das colmeias seu lucro passa a ser R$' + lucroFulga.toFixed(2) + `<br>` + 
+            'Dando um preijuzo de R$' + prejuizoTotal.toFixed(2) + `<br>` +
+            'A taxa de fuga das abelhas ' + fulga + '%' + `<br>` + 
+            'Mas com o Sistema IoT Beecomes recuperamos R$' + beeComes.toFixed(2) + `<br>` + 
+            'A instalção do sistema IoT ficaria em torno de ' + (45 * apiarios) +   ' Considerando uma parcela unica'
+        }
+
+
+       
+
+        
+      
+        
+
+
+
+
+    }
+
+
+
+</script>
