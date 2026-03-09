@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h2>🐝 Sistema de Gestão de Crise - Apiário</h2>
+
+    Quantos apiários foram afetados? <br>
+    <input type="text" id="ipt_qtd_apiarios">
+    <br><br>
+
+    <button onclick="calcularPrejuizo()">
+        Calcular Prejuízo Total
+    </button>
+
+    <div id="div_resultado"></div>
+</body>
+    <script>
+        function calcularPrejuizo() {
+            
+            let apiarios = Number(ipt_qtd_apiarios.value);
+
+            
+            let colmeiasPorApiario = 100;
+            let receitaLiquidaPorColmeia = 1950; 
+            let custoReposicaoPorColmeia = 650;  
+            
+            
+            let totalColmeias = apiarios * colmeiasPorApiario;
+            
+            let perdaReceita = totalColmeias * receitaLiquidaPorColmeia;
+            let perdaReposicao = totalColmeias * custoReposicaoPorColmeia;
+            let prejuizoTotal = perdaReceita + perdaReposicao;
+
+            
+            div_resultado.innerHTML = `
+                <br>
+                <h3 style="color: red;">Relatório de Danos</h3>
+                Total de colmeias perdidas: <b>${totalColmeias}</b> <br>
+                Perda de Receita Esperada: R$ ${perdaReceita.toLocaleString('pt-BR')} <br>
+                Custo Manutenção: R$ ${perdaReposicao.toLocaleString('pt-BR')} <br>
+                <br>
+                <div style="background-color: #F1C338">
+                    <strong>PREJUÍZO ESTIMADO AO ANO: R$ ${prejuizoTotal.toLocaleString('pt-BR')}</strong>
+                </div>
+            `;
+        }
+    </script>
